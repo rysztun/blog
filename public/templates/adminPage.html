@@ -1,0 +1,35 @@
+<div class="col-sm-12">
+	<br>
+	<div>
+	<h3><p>List of all posts:</p></h3>
+	<h3 style="float : right">
+		<p><a href="#post/add">Add new post</a></p>
+	</h3>
+	</div>	
+	<div>
+		<br>
+		<p>Search by title or keywors: <input ng-model="searchText"></p>
+
+		<table class="table table-hover col-sm-12">
+			<thead>
+			<tr>
+				<th>Title</th>
+				<th>Short description</th>
+				<th>Keywords</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr ng-repeat="post in postsList | filter:search">
+				<td>{{post.title}}</td>
+				<td>{{post.shortDesc | limitTo: 30}}</td>
+				<td>{{post.keywords | limitTo: 30}}</td>
+				<td><a href="#post/update/{{post.uUID}}"> Edit</a></td>
+				<td>
+					<span class="glyphicon glyphicon-remove" ng-click="deletePost(post.uUID)"></span>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+	
+</div>	

@@ -1,0 +1,47 @@
+<div>
+	<div class="col-sm-12">
+		<h3><p>{{pageTitle}}</p></h3>
+	</div>
+	<br/>
+	<div class="add">
+		<form class="form-horizontal col-sm-12" role="form">
+			<div class="form-group">
+				<label class="col-sm-3" for="title">Title: </label>
+				<div class="col-sm-12">
+					<input type="text" class="form-control" ng-model="newPost.title" id="title"
+						   placeholder="Enter title"/>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3" for="title">Short description: </label>
+				<div class="col-sm-12">
+					<input type="text" class="form-control" ng-model="newPost.shortDesc" id="title"
+						   placeholder="Enter title"/>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3" for="content">Content: </label>
+				<div class="col-sm-12">
+					<textarea rows="20" class="form-control" ng-model="newPost.content" id="content"
+							  placeholder="Enter post content"></textarea>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3" for="title">Keywords: </label>
+				<div class="col-sm-12">
+					<input type="text" class="form-control" ng-model="newPost.keywords" id="title"
+						   placeholder="Enter title"/>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-sm-offset-5 col-sm-7">
+					<button ng-click="addPost()" class="btn btn-primary">{{buttonAction}}</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

@@ -1,0 +1,48 @@
+@(title: String)
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html"
+xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <base href="/">
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1"/>
+        <title>Blog</title>
+        <link rel="stylesheet" href='@routes.Assets.versioned("bower_components/bootstrap/dist/css/bootstrap.css")'/>
+        <script src='@routes.Assets.versioned("bower_components/jquery/dist/jquery.js")'></script>
+        <script src='@routes.Assets.versioned("bower_components/angular/angular.js")'></script>
+        <script src='@routes.Assets.versioned("bower_components/angular-route/angular-route.js")'></script>
+        <script src='@routes.Assets.versioned("bower_components/angular-resource/angular-resource.js")'></script>
+
+        <script type="text/javascript" src='@routes.Assets.versioned("javascripts/PostController.js")'></script>
+        <script type="text/javascript" src='@routes.Assets.versioned("javascripts/PostAddController.js")'></script>
+        <script type="text/javascript" src='@routes.Assets.versioned("javascripts/PostDetailsController.js")'></script>
+        <script type="text/javascript" src='@routes.Assets.versioned("javascripts/PostUpdateController.js")'></script>
+        <script type="text/javascript" src='@routes.Assets.versioned("javascripts/AdminController.js")'></script>
+        <script type="text/javascript" src='@routes.Assets.versioned("javascripts/RouteProvider.js")'></script>
+        <script type="text/javascript" src='@routes.Assets.versioned("javascripts/PostService.js")'></script>
+        <script type="text/javascript" src='@routes.Assets.versioned("javascripts/AdminService.js")'></script>
+        <script type="text/javascript" src='@routes.Assets.versioned("javascripts/CommentService.js")'></script>
+
+    </head>
+    <body>
+        <div class="container">
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">@title</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li><a href="#">Front page</a></li>
+                        <li><a href="#admin">Admin</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div ng-app="mainApp">
+                <div ng-view="true"></div>
+            </div>
+
+        </div>
+    </body>
+</html>

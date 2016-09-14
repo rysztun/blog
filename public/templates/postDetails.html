@@ -1,0 +1,50 @@
+<div class="col-sm-12">
+    <div style="white-space: pre-lines;">
+        <h2>{{post.title}}</h2>
+    </div>
+    <div>
+        <p><b>{{post.shortDesc}}</b></p>
+    </div>
+    <div>
+        <p>{{post.content}}</p>
+    </div>
+
+    <p><b>Keywords:</b> {{post.keywords}}</p>
+    <br><br>
+    <p><b>Comments</b></p>
+    <form class="form-horizontal col-sm-12" role="form">
+        <div class="form-group">
+            <label class="col-sm-3" for="title">Author: </label>
+            <div class="col-sm-12">
+                <input type="text" class="form-control" ng-model="newComment.author" id="title" placeholder="Author"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3" for="content">Content (max. 100 letters) </label>
+            <div class="col-sm-12">
+                <input type="text" class="form-control" ng-model="newComment.comment" id="content"
+                       placeholder="Enter your comment"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-5 col-sm-7">
+                <button ng-click="addComment()" class="btn btn-primary">Add comment</button>
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-hover col-sm-12">
+        <thead>
+        <tr>
+            <th>Author</th>
+            <th>Content</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="comment in commentsList">
+            <td>{{comment.author}}</td>
+            <td>{{comment.comment | limitTo: 100}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

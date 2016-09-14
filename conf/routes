@@ -1,0 +1,20 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+GET           /                      controllers.HomeController.index
+
+# Map static resources from the /public folder to the /assets URL path
+GET           /assets/*file          controllers.Assets.versioned(path="/public", file: Asset)
+
+
+#Posts
+GET           /posts                 controllers.PostController.findAll
+GET           /post/:uUID            controllers.PostController.find(uUID:String)
+POST          /post                  controllers.PostController.create
+DELETE        /post/:uUID            controllers.PostController.remove(uUID: String)
+PUT           /post/:uUID            controllers.PostController.update(uUID: String)
+
+#Comments
+POST          /comment               controllers.CommentController.create
+GET           /comments/:uUID        controllers.CommentController.findAll(uUID: String)
