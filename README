@@ -1,7 +1,7 @@
-Blog test application Sebastian Rysztuń													           Katowice, 14.09.2016
-========================================================================================================================
+Blog test application Sebastian Rysztuń											Katowice, 14.09.2016
+=====================================================================================================
 
-================================================Strucutre of application================================================
+====================================Strucutre of application=========================================
 
 Controllers
 ===========
@@ -67,20 +67,22 @@ public/javascripts
 ===================
   Javascript files using to run single page application with AngularJS 1.5
   
-  
-=====================================================Used frameworks====================================================
+ 
+===============================================Used frameworks=======================================
 
 1.Play - Scala framework using to bulid MVC application.
 2.AngularJS - Javascript framework using to processing application logic on client side.
-3.Reactive Mongo - Scala driver to MongoDB database provides fully non-blocking and asynchronous I/O operations.
+3.Reactive Mongo - Scala driver to MongoDB database provides fully 
+  non-blocking and asynchronous I/O operations.
 4.Bower - package manager using to manage dependencies according to front-end layer.
 
-======================================================Dependencies======================================================
+==============================================Dependencies===========================================
 
-To run application we need installed in your computer MongoDB database (https://docs.mongodb.com/manual/installation/),
-Bower package manager (https://bower.io/) and Play framework activator (https://playframework.com/download)
+To run application we need installed in your computer MongoDB database 
+(https://docs.mongodb.com/manual/installation/),Bower package manager (https://bower.io/) 
+and Play framework activator (https://playframework.com/download)
 
-=================================================How to run application=================================================
+=================================================How to run application==============================
 
 1. Run mongodb database by 'mongod' command in command line
 2. Go to /public folder in application folder
