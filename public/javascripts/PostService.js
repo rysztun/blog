@@ -11,25 +11,24 @@ postControllers.factory('PostService', [
             findPost: {
                 params: {id: "@id"},
                 method: 'GET',
-                url: '/post/:id',
-                isArray: true
+                url: '/posts/:id'
             },
 
             updatePost: {
                 params: {id: "@id"},
                 method: 'PUT',
-                url: '/post/:id'
+                url: '/posts/:id'
             },
 
             createPost: {
                 method: 'POST',
-                url: '/post'
+                url: '/posts'
             },
 
             deletePost: {
                 params: {id: "@id"},
                 method: 'DELETE',
-                url: '/post/:id'
+                url: '/posts/:id'
             }
         });
     }]);

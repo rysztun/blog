@@ -11,7 +11,7 @@ postControllers.factory('CommentService', [
 
             addComment: {
                 method: 'POST',
-                url: '/comment'
+                url: '/comments'
             }
         });
     }]);

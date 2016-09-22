@@ -6,26 +6,16 @@ import play.api.Logger
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json._
 import play.api.mvc.{Action, Controller}
-import reactivemongo.bson.BSONDocument
-import services.SimpleUUIDGenerator
+import reactivemongo.api.commands.WriteResult
+import services.{CommentService, SimpleUUIDGenerator}
 
 import scala.concurrent.Future
-
-// Reactive Mongo imports
-import play.modules.reactivemongo.{MongoController, ReactiveMongoApi, ReactiveMongoComponents}
-import reactivemongo.api.Cursor
-
-// BSON-JSON conversions/collection
-import play.modules.reactivemongo.json.collection._
-import reactivemongo.play.json._
 
 /**
   * Created by Sebastian on 2016-09-14.
   */
-class CommentController @Inject()(val reactiveMongoApi: ReactiveMongoApi, val simpleUUIDGenerator: SimpleUUIDGenerator)
-  extends Controller with MongoController with ReactiveMongoComponents {
-
-  def collection: JSONCollection = db.collection[JSONCollection]("comments")
+class CommentController @Inject()(val simpleUUIDGenerator: SimpleUUIDGenerator,
+                                  val commentService: CommentService) extends Controller {
 
   import models.JsonFormats._
   import models._
@@ -33,7 +23,7 @@ class CommentController @Inject()(val reactiveMongoApi: ReactiveMongoApi, val si
   def create = Action.async(parse.json) { request =>
     val comment = request.body.validate[Comment]
     comment.map { comment =>
-      collection.insert(Comment(comment.uUID, comment.author, comment.comment))
+      commentService.create(comment)
         .map { lastError =>
           Logger.debug(s"Successfully inserted with LastError: $lastError")
           Created
@@ -43,19 +33,15 @@ class CommentController @Inject()(val reactiveMongoApi: ReactiveMongoApi, val si
   }
 
   def findAll(uUID: String) = Action.async { request =>
-    val cursor: Cursor[Comment] = collection.
-      find(Json.obj(FieldNames.uUID -> uUID)).
-      sort(Json.obj("created" -> -1)).
-      cursor[Comment]
 
-    val futurePostList: Future[List[Comment]] = cursor.collect[List]()
+    val futurePostList: Future[List[Comment]] = commentService.findByUUID(uUID)
     futurePostList.map { posts =>
       Ok(Json.toJson(posts))
     }
   }
 
   def remove(uUID: String) = {
-    val futureRemove = collection.remove(Json.obj(FieldNames.uUID -> uUID))
+    val futureRemove: Future[WriteResult] = commentService.remove(uUID)
     futureRemove.map(result => Accepted)
   }
 }

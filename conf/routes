@@ -10,11 +10,11 @@ GET           /assets/*file          controllers.Assets.versioned(path="/public"
 
 #Posts
 GET           /posts                 controllers.PostController.findAll
-GET           /post/:uUID            controllers.PostController.find(uUID:String)
-POST          /post                  controllers.PostController.create
-DELETE        /post/:uUID            controllers.PostController.remove(uUID: String)
-PUT           /post/:uUID            controllers.PostController.update(uUID: String)
+GET           /posts/:uUID            controllers.PostController.find(uUID:String)
+POST          /posts                  controllers.PostController.create
+DELETE        /posts/:uUID            controllers.PostController.remove(uUID: String)
+PUT           /posts/:uUID            controllers.PostController.update(uUID: String)
 
 #Comments
-POST          /comment               controllers.CommentController.create
+POST          /comments               controllers.CommentController.create
 GET           /comments/:uUID        controllers.CommentController.findAll(uUID: String)

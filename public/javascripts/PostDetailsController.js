@@ -9,8 +9,8 @@ postControllers.controller('PostDetailsController',
 
 
         PostService.findPost({id: $scope.id}, function (post) {
-            console.log(post[0]);
-            $scope.post = post[0];
+            console.log(post);
+            $scope.post = post;
         });
 
         CommentService.getComments({id: $scope.id}, function (comments) {

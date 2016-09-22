@@ -11,8 +11,8 @@ postControllers.controller('PostUpdateController',
 
         var init = function () {
             PostService.findPost({id: $scope.id}, function (post) {
-                console.log(post[0]);
-                $scope.newPost = post[0];
+                console.log(post);
+                $scope.newPost = post;
             });
         };
         init();

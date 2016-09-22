@@ -6,26 +6,17 @@ import play.api.Logger
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json._
 import play.api.mvc.{Action, Controller}
-import reactivemongo.bson.BSONDocument
-import services.SimpleUUIDGenerator
+import reactivemongo.api.commands.{UpdateWriteResult, WriteResult}
+import services.{PostService, SimpleUUIDGenerator}
 
 import scala.concurrent.Future
-
-// Reactive Mongo imports
-import play.modules.reactivemongo.{MongoController, ReactiveMongoApi, ReactiveMongoComponents}
-import reactivemongo.api.Cursor
-
-// BSON-JSON conversions/collection
-import play.modules.reactivemongo.json.collection._
-import reactivemongo.play.json._
 
 /**
   * Created by Sebastian on 2016-09-14.
   */
-class PostController @Inject()(val reactiveMongoApi: ReactiveMongoApi, val simpleUUIDGenerator: SimpleUUIDGenerator, commentController: CommentController)
-  extends Controller with MongoController with ReactiveMongoComponents {
-
-  def collection: JSONCollection = db.collection[JSONCollection]("blog")
+class PostController @Inject()(val simpleUUIDGenerator: SimpleUUIDGenerator,
+                               val commentController: CommentController, val postService: PostService)
+                              extends Controller {
 
   import models.JsonFormats._
   import models._
@@ -33,7 +24,7 @@ class PostController @Inject()(val reactiveMongoApi: ReactiveMongoApi, val simpl
   def create = Action.async(parse.json) { request =>
     val post = request.body.validate[Post]
     post.map { post =>
-      collection.insert(Post(post.title, post.shortDesc, post.content, simpleUUIDGenerator.generate.toString, post.keywords, post.date))
+      postService.create(post)
         .map { lastError =>
           Logger.debug(s"Successfully inserted with LastError: $lastError")
           Created
@@ -43,47 +34,30 @@ class PostController @Inject()(val reactiveMongoApi: ReactiveMongoApi, val simpl
   }
 
   def find(uUID: String) = Action.async { request =>
-    val cursor: Cursor[Post] = collection.
-      find(Json.obj(FieldNames.uUID -> uUID)).
-      sort(Json.obj("created" -> -1)).
-      cursor[Post]
-
-    val futurePostList: Future[List[Post]] = cursor.collect[List]()
+    val futurePostList: Future[List[Post]] = postService.findByUUID(uUID)
     futurePostList.map { posts =>
-      Ok(Json.toJson(posts))
+      val post = posts.head
+      Ok(Json.toJson(post))
     }
   }
 
   def findAll() = Action.async { request =>
-    val cursor: Cursor[Post] = collection.
-      find(Json.obj()).
-      sort(Json.obj("created" -> -1)).
-      cursor[Post]
-
-    val futurePostList: Future[List[Post]] = cursor.collect[List]()
+    val futurePostList: Future[List[Post]] = postService.findAll
     futurePostList.map { posts =>
       Ok(Json.toJson(posts))
     }
   }
 
-  def remove(uUID: String) = Action.async { request =>
-    commentController.remove(uUID)
-    val futureRemove = collection.remove(Json.obj(FieldNames.uUID -> uUID))
-    futureRemove.map(result => Accepted)
+  def update(uUID: String) = Action.async(parse.json) { request =>
+    val post = request.body.validate[Post].getOrElse(Post.EmptyPost)
+
+    val futureUpdate: Future[UpdateWriteResult] = postService.update(uUID, post)
+    futureUpdate.map { result => Accepted }
   }
 
-  def update(uUID: String) = Action.async(parse.json) { request =>
-    val post = request.body.validate[Post].getOrElse(Post("", "", "", "", "", 0))
-    val modifier = BSONDocument("$set" -> BSONDocument(
-      FieldNames.title -> post.title,
-      FieldNames.shortDesc -> post.shortDesc,
-      FieldNames.content -> post.content,
-      FieldNames.uUID -> post.uUID,
-      FieldNames.keywords -> post.keywords,
-      FieldNames.date -> post.date
-    ))
-
-    val futureUpdate = collection.update(Json.obj(FieldNames.uUID -> uUID), post)
-    futureUpdate.map { result => Accepted }
+  def remove(uUID: String) = Action.async { request =>
+    commentController.remove(uUID)
+    val futureRemove: Future[WriteResult] = postService.remove(uUID)
+    futureRemove.map(result => Accepted)
   }
 }

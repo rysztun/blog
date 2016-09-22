@@ -5,5 +5,9 @@ package models
   */
 case class Post(title: String, shortDesc: String, content: String, uUID: String, keywords: String, date: Long)
 
+object Post {
+  val EmptyPost = new Post("", "","","","", new java.util.Date().getTime)
+}
+
 
 
